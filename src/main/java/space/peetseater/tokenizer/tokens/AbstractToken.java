@@ -21,4 +21,12 @@ abstract public class AbstractToken {
     public String toString() {
         return "type:<%s>, value:<%s>".formatted(type, value);
     }
+
+    public String getType() {
+        return type;
+    }
+
+    public String getValue() {
+        return value;
+    }
 }
