@@ -19,7 +19,7 @@ public class Tokenizer {
 
     protected List<AbstractToken> tokensAsList(String markdown) {
         if (markdown == null || markdown.trim().isEmpty()) {
-            return List.of(new EndOfFileToken());
+            return List.of(EndOfFileToken.INSTANCE);
         }
 
         AbstractToken token = scanOneToken(markdown);
