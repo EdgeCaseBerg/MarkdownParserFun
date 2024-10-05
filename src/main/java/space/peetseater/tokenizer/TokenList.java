@@ -1,5 +1,7 @@
 package space.peetseater.tokenizer;
 
+import space.peetseater.tokenizer.tokens.AbstractToken;
+
 import java.util.List;
 import java.util.Vector;
 import java.util.function.Consumer;

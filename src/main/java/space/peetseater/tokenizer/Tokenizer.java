@@ -1,5 +1,8 @@
 package space.peetseater.tokenizer;
 
+import space.peetseater.tokenizer.tokens.AbstractToken;
+import space.peetseater.tokenizer.tokens.EndOfFileToken;
+
 import java.util.LinkedList;
 import java.util.List;
 

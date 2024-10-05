@@ -1,6 +1,6 @@
 package space.peetseater;
 
-import space.peetseater.tokenizer.AbstractToken;
+import space.peetseater.tokenizer.tokens.AbstractToken;
 import space.peetseater.tokenizer.TokenList;
 import space.peetseater.tokenizer.Tokenizer;
 

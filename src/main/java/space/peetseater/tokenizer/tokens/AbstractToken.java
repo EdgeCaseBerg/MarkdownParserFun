@@ -1,4 +1,4 @@
-package space.peetseater.tokenizer;
+package space.peetseater.tokenizer.tokens;
 
 abstract public class AbstractToken {
     protected String type;

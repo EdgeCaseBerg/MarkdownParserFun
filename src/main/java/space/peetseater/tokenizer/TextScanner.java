@@ -1,5 +1,9 @@
 package space.peetseater.tokenizer;
 
+import space.peetseater.tokenizer.tokens.AbstractToken;
+import space.peetseater.tokenizer.tokens.ConcreteToken;
+import space.peetseater.tokenizer.tokens.NullToken;
+
 public class TextScanner implements TokenScanner {
 
     protected SimpleScanner simpleScanner;
