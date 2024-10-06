@@ -4,14 +4,14 @@ import java.util.List;
 
 public class BodyNode extends AbstractMarkdownNode {
     public static final String TYPE = "BODY";
-    private final List<ParagraphNode> paragraphs;
+    private final List<AbstractMarkdownNode> bodyParts;
 
-    public BodyNode(List<ParagraphNode> paragraphs, int consumed) {
+    public BodyNode(List<AbstractMarkdownNode> paragraphs, int consumed) {
         super(TYPE, consumed);
-        this.paragraphs = paragraphs;
+        this.bodyParts = paragraphs;
     }
 
-    public List<ParagraphNode> getParagraphs() {
-        return paragraphs;
+    public List<AbstractMarkdownNode> getBodyParts() {
+        return bodyParts;
     }
 }
