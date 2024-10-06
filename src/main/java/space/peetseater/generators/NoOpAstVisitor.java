@@ -14,7 +14,15 @@ public abstract class NoOpAstVisitor implements AstVisitor {
     public void visit(TextNode node) {}
 
     @Override
-    public void visit(BodyNode node) {}
+    public void visit(BodyNode node) {
+        for (AbstractMarkdownNode child : node.getBodyParts()) {
+            child.accept(this);
+        }
+    }
     @Override
-    public void visit(ParagraphNode node) {}
+    public void visit(ParagraphNode node) {
+        for (AbstractMarkdownNode child : node.getSentences()) {
+            child.accept(this);
+        }
+    }
 }
