@@ -23,6 +23,14 @@ public abstract class TokenParser {
         return NullNode.INSTANCE;
     }
 
+    public MatchedAndConsumed matchAtLeastOne(TokenList tokens, TokenParser parser) {
+        MatchedAndConsumed matchAndConsumed = matchZeroOrMore(tokens, parser);
+        if (matchAndConsumed.getMatched().isEmpty()) {
+            return new MatchedAndConsumed(List.of(), 0);
+        }
+        return matchAndConsumed;
+    }
+
     /** Tries to match as many times as possible, returning all matched nodes. Kleene star */
     public MatchedAndConsumed matchZeroOrMore(TokenList tokens, TokenParser tokenParser) {
         int consumed = 0;
