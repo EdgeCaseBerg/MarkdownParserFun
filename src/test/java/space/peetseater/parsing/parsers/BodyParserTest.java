@@ -1,9 +1,8 @@
-package space.peetseater.parsing;
+package space.peetseater.parsing.parsers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import space.peetseater.parsing.ast.*;
-import space.peetseater.parsing.parsers.BodyParser;
 import space.peetseater.tokenizer.TokenList;
 import space.peetseater.tokenizer.tokens.*;
 

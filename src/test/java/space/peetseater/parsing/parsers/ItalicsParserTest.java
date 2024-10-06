@@ -1,62 +1,61 @@
-package space.peetseater.parsing;
+package space.peetseater.parsing.parsers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import space.peetseater.parsing.ast.AbstractMarkdownNode;
-import space.peetseater.parsing.ast.BoldNode;
+import space.peetseater.parsing.ast.ItalicsNode;
 import space.peetseater.parsing.ast.NullNode;
-import space.peetseater.parsing.parsers.BoldParser;
 import space.peetseater.tokenizer.TokenList;
-import space.peetseater.tokenizer.tokens.StarToken;
 import space.peetseater.tokenizer.tokens.TextToken;
+import space.peetseater.tokenizer.tokens.UnderscoreToken;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-class BoldParserTest {
+class ItalicsParserTest {
 
-    BoldParser boldParser;
+    ItalicsParser italicsParser;
 
     @BeforeEach
     public void setup() {
-        boldParser = new BoldParser();
+        italicsParser = new ItalicsParser();
     }
 
 
     @Test
     public void empty_list_returns_null_node() {
         TokenList tokens = new TokenList(List.of());
-        AbstractMarkdownNode node = boldParser.match(tokens);
+        AbstractMarkdownNode node = italicsParser.match(tokens);
         assertEquals(NullNode.INSTANCE, node);
     }
 
     @Test
     public void matches_star_star_text_star_star_as_bold() {
         TokenList tokens = new TokenList(List.of(
-                StarToken.INSTANCE,
-                StarToken.INSTANCE,
+                UnderscoreToken.INSTANCE,
+                UnderscoreToken.INSTANCE,
                 new TextToken("this text!"),
-                StarToken.INSTANCE,
-                StarToken.INSTANCE
+                UnderscoreToken.INSTANCE,
+                UnderscoreToken.INSTANCE
         ));
-        AbstractMarkdownNode node = boldParser.match(tokens);
-        assertEquals(BoldNode.TYPE, node.getType());
+        AbstractMarkdownNode node = italicsParser.match(tokens);
+        assertEquals(ItalicsNode.TYPE, node.getType());
         assertEquals(5, node.getConsumed());
-        assertEquals("this text!", ((BoldNode) node).getValue() );
+        assertEquals("this text!", ((ItalicsNode) node).getValue() );
     }
 
     @Test
     public void matches_star_text_star_as_bold() {
         TokenList tokens = new TokenList(List.of(
-                StarToken.INSTANCE,
+                UnderscoreToken.INSTANCE,
                 new TextToken("this text!"),
-                StarToken.INSTANCE
+                UnderscoreToken.INSTANCE
         ));
-        AbstractMarkdownNode node = boldParser.match(tokens);
-        assertEquals(BoldNode.TYPE, node.getType());
+        AbstractMarkdownNode node = italicsParser.match(tokens);
+        assertEquals(ItalicsNode.TYPE, node.getType());
         assertEquals(3, node.getConsumed());
-        assertEquals("this text!", ((BoldNode) node).getValue() );
+        assertEquals("this text!", ((ItalicsNode) node).getValue() );
     }
 
 }
