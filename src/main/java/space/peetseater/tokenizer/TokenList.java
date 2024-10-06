@@ -38,6 +38,11 @@ public class TokenList extends Vector<AbstractToken> {
             }
             i++;
         }
+
+        if (i != requiredTypesInARow.length) {
+            return false;
+        }
+
         return true;
     }
 
