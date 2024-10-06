@@ -1,8 +1,8 @@
 package space.peetseater.tokenizer;
 
 import space.peetseater.tokenizer.tokens.AbstractToken;
-import space.peetseater.tokenizer.tokens.ConcreteToken;
 import space.peetseater.tokenizer.tokens.NullToken;
+import space.peetseater.tokenizer.tokens.TextToken;
 
 public class TextScanner implements TokenScanner {
 
@@ -34,6 +34,6 @@ public class TextScanner implements TokenScanner {
             return NullToken.INSTANCE;
         }
 
-        return new ConcreteToken("TEXT", sb.toString());
+        return new TextToken(sb.toString());
     }
 }
