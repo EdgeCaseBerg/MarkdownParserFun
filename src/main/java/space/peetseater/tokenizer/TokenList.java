@@ -29,12 +29,15 @@ public class TokenList extends Vector<AbstractToken> {
     }
 
     public boolean typesAheadAre(String ...requiredTypesInARow) {
-        if (this.isEmpty() || size() - 1 > requiredTypesInARow.length) {
+        if (this.isEmpty()) {
             return false;
         }
 
         int i = 0;
         for (String type : requiredTypesInARow) {
+            if (i > size() - 1) {
+                return false;
+            }
             boolean matchesTypeAtIndex = get(i).getType().equals(type);
             if (!matchesTypeAtIndex) {
                 return false;
