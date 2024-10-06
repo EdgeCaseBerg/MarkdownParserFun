@@ -24,4 +24,9 @@ abstract public class AbstractMarkdownNode {
     public boolean isNull() {
         return false;
     }
+
+    @Override
+    public String toString() {
+        return getType();
+    }
 }

@@ -11,4 +11,9 @@ public class MarkdownNode extends AbstractMarkdownNode {
     public String getValue() {
         return value;
     }
+
+    @Override
+    public String toString() {
+        return "%s:<%s>".formatted(getType(), getValue());
+    }
 }

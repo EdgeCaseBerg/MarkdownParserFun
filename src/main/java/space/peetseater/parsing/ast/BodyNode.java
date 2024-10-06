@@ -14,4 +14,13 @@ public class BodyNode extends AbstractMarkdownNode {
     public List<AbstractMarkdownNode> getBodyParts() {
         return bodyParts;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder("BodyNode:<");
+        for (AbstractMarkdownNode bodyNode : bodyParts) {
+            stringBuilder.append("BodyPart:<%s>".formatted(bodyNode.toString()));
+        }
+        return stringBuilder.append(">").toString();
+    }
 }
