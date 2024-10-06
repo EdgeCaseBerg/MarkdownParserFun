@@ -6,6 +6,7 @@ import space.peetseater.parsing.ast.AbstractMarkdownNode;
 import space.peetseater.parsing.ast.NullNode;
 import space.peetseater.parsing.ast.ParagraphNode;
 import space.peetseater.parsing.ast.TextNode;
+import space.peetseater.parsing.parsers.ParagraphParser;
 import space.peetseater.tokenizer.TokenList;
 import space.peetseater.tokenizer.tokens.EndOfFileToken;
 import space.peetseater.tokenizer.tokens.NewLineToken;

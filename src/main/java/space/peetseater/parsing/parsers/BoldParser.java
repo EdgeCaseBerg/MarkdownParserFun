@@ -1,4 +1,4 @@
-package space.peetseater.parsing;
+package space.peetseater.parsing.parsers;
 
 import space.peetseater.parsing.ast.AbstractMarkdownNode;
 import space.peetseater.parsing.ast.BoldNode;

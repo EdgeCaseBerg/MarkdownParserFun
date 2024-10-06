@@ -1,11 +1,9 @@
-package space.peetseater.parsing;
+package space.peetseater.parsing.parsers;
 
 import space.peetseater.parsing.ast.AbstractMarkdownNode;
-import space.peetseater.parsing.ast.BoldNode;
 import space.peetseater.parsing.ast.ItalicsNode;
 import space.peetseater.parsing.ast.NullNode;
 import space.peetseater.tokenizer.TokenList;
-import space.peetseater.tokenizer.tokens.StarToken;
 import space.peetseater.tokenizer.tokens.TextToken;
 import space.peetseater.tokenizer.tokens.UnderscoreToken;
 

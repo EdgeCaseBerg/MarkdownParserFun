@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 import space.peetseater.parsing.ast.AbstractMarkdownNode;
 import space.peetseater.parsing.ast.ItalicsNode;
 import space.peetseater.parsing.ast.NullNode;
+import space.peetseater.parsing.parsers.ItalicsParser;
 import space.peetseater.tokenizer.TokenList;
 import space.peetseater.tokenizer.tokens.TextToken;
 import space.peetseater.tokenizer.tokens.UnderscoreToken;
