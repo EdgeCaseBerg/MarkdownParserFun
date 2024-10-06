@@ -1,5 +1,7 @@
 package space.peetseater.parsing.ast;
 
+import space.peetseater.generators.AstVisitor;
+
 import java.util.List;
 
 public class BodyNode extends AbstractMarkdownNode {
@@ -23,4 +25,10 @@ public class BodyNode extends AbstractMarkdownNode {
         }
         return stringBuilder.append(">").toString();
     }
+
+    @Override
+    public void accept(AstVisitor visitor) {
+        visitor.visit(this);
+    }
+
 }

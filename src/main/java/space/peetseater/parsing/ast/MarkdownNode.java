@@ -1,6 +1,6 @@
 package space.peetseater.parsing.ast;
 
-public class MarkdownNode extends AbstractMarkdownNode {
+public abstract class MarkdownNode extends AbstractMarkdownNode {
     protected final String value;
 
     public MarkdownNode(String type, String value, int consumed) {

@@ -1,5 +1,7 @@
 package space.peetseater.parsing.ast;
 
+import space.peetseater.generators.AstVisitor;
+
 abstract public class AbstractMarkdownNode {
     protected final String type;
     protected final int consumed;
@@ -29,4 +31,6 @@ abstract public class AbstractMarkdownNode {
     public String toString() {
         return getType();
     }
+
+    abstract public void accept(AstVisitor visitor);
 }
