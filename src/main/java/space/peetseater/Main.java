@@ -1,5 +1,6 @@
 package space.peetseater;
 
+import space.peetseater.generators.html.HtmlGenerator;
 import space.peetseater.parsing.MarkdownParser;
 import space.peetseater.parsing.ast.AbstractMarkdownNode;
 import space.peetseater.tokenizer.tokens.AbstractToken;
@@ -18,5 +19,9 @@ public class Main {
         MarkdownParser markdownParser = new MarkdownParser();
         AbstractMarkdownNode dom = markdownParser.parse(tokens);
         System.out.println(dom);
+
+        HtmlGenerator htmlGenerator = new HtmlGenerator();
+        String htmlString = htmlGenerator.generate(dom);
+        System.out.println(htmlString);
     }
 }
