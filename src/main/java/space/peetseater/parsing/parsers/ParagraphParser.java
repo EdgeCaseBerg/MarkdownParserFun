@@ -10,35 +10,51 @@ import space.peetseater.tokenizer.tokens.NewLineToken;
 public class ParagraphParser extends TokenParser {
     @Override
     public AbstractMarkdownNode match(TokenList tokenList) {
-        MatchedAndConsumed matchedAndConsumed = matchAtLeastOne(tokenList, new SentenceParser());
-        if (matchedAndConsumed.getMatched().isEmpty()) {
+        return matchFirst(
+                tokenList,
+                new SentencesFollowedByTwoNewLines(),
+                new SentencesThenEndOfFileAfterNewLine()
+        );
+    }
+
+    static class SentencesThenEndOfFileAfterNewLine extends TokenParser {
+        @Override
+        public AbstractMarkdownNode match(TokenList tokenList) {
+            MatchedAndConsumed matchedAndConsumed = matchZeroOrMore(tokenList, new SentenceParser());
+            if (matchedAndConsumed.getMatched().isEmpty()) {
+                return NullNode.INSTANCE;
+            }
+
+            TokenList afterSentences = tokenList.offset(matchedAndConsumed.getConsumed());
+            if (afterSentences.typesAheadAre(EndOfFileToken.TYPE)) {
+                int consumed = matchedAndConsumed.getConsumed() + 1;
+                return new ParagraphNode(matchedAndConsumed.getMatched(), consumed);
+            }
+
+            if (afterSentences.typesAheadAre(NewLineToken.TYPE, EndOfFileToken.TYPE)) {
+                int consumed = matchedAndConsumed.getConsumed() + 2;
+                return new ParagraphNode(matchedAndConsumed.getMatched(), consumed);
+            }
+
             return NullNode.INSTANCE;
         }
-        TokenList afterSentences = tokenList.offset(matchedAndConsumed.getConsumed());
-        // Two newlines signifies a new paragraph
-        // Handle end of file here for now as well
-        if (
-            afterSentences.typesAheadAre(NewLineToken.TYPE, NewLineToken.TYPE) ||
-            afterSentences.typesAheadAre(NewLineToken.TYPE, EndOfFileToken.TYPE)
-        ) {
-            int consumed = matchedAndConsumed.getConsumed() + 2;
-            return new ParagraphNode(matchedAndConsumed.getMatched(), consumed);
+
+    }
+    static class SentencesFollowedByTwoNewLines extends TokenParser {
+        @Override
+        public AbstractMarkdownNode match(TokenList tokenList) {
+            MatchedAndConsumed matchedAndConsumed = matchAtLeastOne(tokenList, new SentenceParser());
+            if (matchedAndConsumed.getMatched().isEmpty()) {
+                return NullNode.INSTANCE;
+            }
+            TokenList afterSentences = tokenList.offset(matchedAndConsumed.getConsumed());
+            if (afterSentences.typesAheadAre(NewLineToken.TYPE, NewLineToken.TYPE)) {
+                int consumed = matchedAndConsumed.getConsumed() + 2;
+                return new ParagraphNode(matchedAndConsumed.getMatched(), consumed);
+            }
+
+            return NullNode.INSTANCE;
         }
-
-        if (afterSentences.typesAheadAre(EndOfFileToken.TYPE)) {
-            int consumed = matchedAndConsumed.getConsumed() + 1;
-            return new ParagraphNode(matchedAndConsumed.getMatched(), consumed);
-        }
-
-        // TODO: Decide if we'll keep newline collapsing between paragraphs.
-        // Or if we'll implement a newline parser that will insert <br/>
-//        TokenList afterNewLines = afterSentences.offset(consumed);
-//        while (afterNewLines.typesAheadAre(NewLineToken.TYPE)) {
-//            consumed++;
-//            afterNewLines = afterNewLines.offset(1);
-//        }
-        return NullNode.INSTANCE;
-
 
 
     }
