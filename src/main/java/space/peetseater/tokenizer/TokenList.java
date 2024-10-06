@@ -22,7 +22,7 @@ public class TokenList extends Vector<AbstractToken> {
             return this;
         }
 
-        return new TokenList(this.subList(index, this.size() - 1));
+        return new TokenList(this.subList(index, this.size()));
     }
 
     public boolean typesAheadAre(String ...requiredTypesInARow) {
