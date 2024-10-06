@@ -18,7 +18,8 @@ public class Tokenizer {
     }
 
     protected List<AbstractToken> tokensAsList(String markdown) {
-        if (markdown == null || markdown.trim().isEmpty()) {
+        // Do NOT markdown.trim! we need the newlines!
+        if (markdown == null || markdown.isEmpty()) {
             return List.of(EndOfFileToken.INSTANCE);
         }
 
