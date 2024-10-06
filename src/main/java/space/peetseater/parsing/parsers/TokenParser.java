@@ -37,7 +37,8 @@ public abstract class TokenParser {
         List<AbstractMarkdownNode> matched = new LinkedList<>();
         AbstractMarkdownNode node;
         while(true) {
-            node = tokenParser.match(tokens.offset(consumed));
+            TokenList unConsumedTokens = tokens.offset(consumed);
+            node = tokenParser.match(unConsumedTokens);
             if (node.isNull()) {
                 break;
             }
