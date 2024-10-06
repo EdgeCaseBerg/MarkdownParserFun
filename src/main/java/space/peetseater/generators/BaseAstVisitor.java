@@ -2,7 +2,7 @@ package space.peetseater.generators;
 
 import space.peetseater.parsing.ast.*;
 
-public abstract class NoOpAstVisitor implements AstVisitor {
+public abstract class BaseAstVisitor implements AstVisitor {
 
     @Override
     public void visit(NullNode node) {}

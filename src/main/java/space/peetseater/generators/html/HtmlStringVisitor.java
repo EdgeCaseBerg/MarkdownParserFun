@@ -1,9 +1,9 @@
 package space.peetseater.generators.html;
 
-import space.peetseater.generators.NoOpAstVisitor;
+import space.peetseater.generators.BaseAstVisitor;
 import space.peetseater.parsing.ast.*;
 
-public class HtmlStringVisitor extends NoOpAstVisitor {
+public class HtmlStringVisitor extends BaseAstVisitor {
 
     String indentString;
     int indentLevel;
