@@ -15,7 +15,7 @@ public abstract class TokenParser {
      */
     public AbstractMarkdownNode matchFirst(TokenList tokens, TokenParser ...parsers) {
         for (TokenParser tokenParser : parsers) {
-            AbstractMarkdownNode node = tokenParser.matchFirst(tokens);
+            AbstractMarkdownNode node = tokenParser.match(tokens);
             if (node.isPresent()) {
                 return node;
             }
