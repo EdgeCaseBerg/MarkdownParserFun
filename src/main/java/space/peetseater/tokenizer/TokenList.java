@@ -17,5 +17,29 @@ public class TokenList extends Vector<AbstractToken> {
         }
     }
 
+    public TokenList offset(int index) {
+        if (index == 0) {
+            return this;
+        }
+
+        return new TokenList(this.subList(index, this.size() - 1));
+    }
+
+    public boolean typesAheadAre(String ...requiredTypesInARow) {
+        if (this.isEmpty() || size() - 1 > requiredTypesInARow.length) {
+            return false;
+        }
+
+        int i = 0;
+        for (String type : requiredTypesInARow) {
+            boolean matchesTypeAtIndex = get(i).getType().equals(type);
+            if (!matchesTypeAtIndex) {
+                return false;
+            }
+            i++;
+        }
+        return true;
+    }
+
     // TODO: add methods as needed
 }
