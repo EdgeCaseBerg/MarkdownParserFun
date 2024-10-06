@@ -12,7 +12,8 @@ public class Main {
         Tokenizer tokenizer = new Tokenizer();
         String doesntWorkYet = "\nHello *world*\nHow _are_ you?\n\n";
         String wellformed = "Hello there\n\nParagraph\n\nThis is _well formed_ markdown. *I guess*\n\n";
-        TokenList tokens = tokenizer.tokenize(wellformed);
+        String sampleFromRubyBlog = "__Foo__ and *text*.\n\nAnother para.";
+        TokenList tokens = tokenizer.tokenize(sampleFromRubyBlog);
         for (AbstractToken token : tokens) {
             System.out.println(token);
         }
