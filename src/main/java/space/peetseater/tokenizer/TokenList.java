@@ -18,7 +18,7 @@ public class TokenList extends Vector<AbstractToken> {
     }
 
     public TokenList offset(int index) {
-        if (index == 0) {
+        if (index == 0 || index > size()) {
             return this;
         }
 
