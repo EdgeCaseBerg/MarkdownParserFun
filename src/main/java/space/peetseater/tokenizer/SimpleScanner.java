@@ -13,6 +13,11 @@ public class SimpleScanner implements TokenScanner {
         tokenToType.put('_', UnderscoreToken.TYPE);
         tokenToType.put('*', StarToken.TYPE);
         tokenToType.put('\n', NewLineToken.TYPE);
+        tokenToType.put('-', DashToken.TYPE);
+        tokenToType.put('[', BracketStartToken.TYPE);
+        tokenToType.put(']', BracketEndToken.TYPE);
+        tokenToType.put('(', ParenStartToken.TYPE);
+        tokenToType.put(')', ParenStopToken.TYPE);
     }
 
     @Override
