@@ -8,6 +8,7 @@ public class ConcreteToken extends AbstractToken {
             case UnderscoreToken.TYPE -> UnderscoreToken.INSTANCE;
             case StarToken.TYPE       -> StarToken.INSTANCE;
             case NewLineToken.TYPE    -> NewLineToken.INSTANCE;
+            case DashToken.TYPE       -> DashToken.INSTANCE;
             default                   -> new ConcreteToken(type, value);
         };
     }
