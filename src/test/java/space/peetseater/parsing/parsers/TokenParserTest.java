@@ -7,7 +7,6 @@ import space.peetseater.parsing.ast.BoldNode;
 import space.peetseater.parsing.ast.ItalicsNode;
 import space.peetseater.parsing.ast.TextNode;
 import space.peetseater.tokenizer.TokenList;
-import space.peetseater.tokenizer.tokens.ConcreteToken;
 import space.peetseater.tokenizer.tokens.StarToken;
 import space.peetseater.tokenizer.tokens.TextToken;
 import space.peetseater.tokenizer.tokens.UnderscoreToken;
