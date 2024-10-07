@@ -4,12 +4,16 @@ public class ConcreteToken extends AbstractToken {
 
     public static ConcreteToken make(String type, String value) {
         return switch (type) {
-            case TextToken.TYPE       -> new TextToken(value);
-            case UnderscoreToken.TYPE -> UnderscoreToken.INSTANCE;
-            case StarToken.TYPE       -> StarToken.INSTANCE;
-            case NewLineToken.TYPE    -> NewLineToken.INSTANCE;
-            case DashToken.TYPE       -> DashToken.INSTANCE;
-            default                   -> new ConcreteToken(type, value);
+            case TextToken.TYPE         -> new TextToken(value);
+            case UnderscoreToken.TYPE   -> UnderscoreToken.INSTANCE;
+            case StarToken.TYPE         -> StarToken.INSTANCE;
+            case NewLineToken.TYPE      -> NewLineToken.INSTANCE;
+            case DashToken.TYPE         -> DashToken.INSTANCE;
+            case BracketStartToken.TYPE -> BracketStartToken.INSTANCE;
+            case BracketEndToken.TYPE   -> BracketEndToken.INSTANCE;
+            case ParenStartToken.TYPE   -> ParenStartToken.INSTANCE;
+            case ParenStopToken.TYPE    -> ParenStopToken.INSTANCE;
+            default                     -> new ConcreteToken(type, value);
         };
     }
 
