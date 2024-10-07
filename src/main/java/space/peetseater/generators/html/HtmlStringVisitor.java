@@ -61,6 +61,30 @@ public class HtmlStringVisitor extends BaseAstVisitor {
         stringBuilder.append("\n");
     }
 
+    @Override
+    public void visit(ListItemNode node) {
+        stringBuilder.append("<li>\n");
+        indentLevel++;
+        indent();
+        for (AbstractMarkdownNode listText : node.getRuns()) {
+            listText.accept(this);
+        }
+        indentLevel--;
+        stringBuilder.append("\n</li>\n");
+    }
+
+    @Override
+    public void visit(UnorderedListNode listNode) {
+        stringBuilder.append("<ul>\n");
+        indentLevel++;
+        indent();
+        for (AbstractMarkdownNode item : listNode.getItems()) {
+            item.accept(this);
+        }
+        indentLevel--;
+        stringBuilder.append("\n</ul>\n");
+    }
+
     private String getIndentString() {
         return indentString;
     }

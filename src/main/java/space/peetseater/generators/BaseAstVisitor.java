@@ -25,4 +25,11 @@ public abstract class BaseAstVisitor implements AstVisitor {
             child.accept(this);
         }
     }
+
+    @Override
+    public void visit(UnorderedListNode listNode) {
+        for (AbstractMarkdownNode item : listNode.getItems()) {
+            item.accept(this);
+        }
+    }
 }

@@ -14,4 +14,8 @@ public interface AstVisitor {
     void visit(BodyNode node);
 
     void visit(ParagraphNode node);
+
+    void visit(ListItemNode node);
+
+    void visit(UnorderedListNode listNode);
 }
