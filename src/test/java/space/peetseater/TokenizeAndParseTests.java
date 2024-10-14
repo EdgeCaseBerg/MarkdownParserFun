@@ -82,6 +82,13 @@ public class TokenizeAndParseTests {
                     NV(ItalicsNode.class, "are"),
                     NV(TextNode.class, " you?")
                 )
+            ),
+            Arguments.of(2, 1, 1, "A list\n\n- a list item\n- a list item again\n\n",
+                List.of(
+                    NV(TextNode.class,"A list"),
+                    NV(TextNode.class, " a list item"),
+                    NV(TextNode.class, " a list item again")
+                )
             )
         );
     }
