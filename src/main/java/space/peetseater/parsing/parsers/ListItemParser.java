@@ -12,13 +12,16 @@ import space.peetseater.tokenizer.tokens.StarToken;
 public class ListItemParser extends TokenParser {
     @Override
     public AbstractMarkdownNode match(TokenList tokenList) {
-        boolean firstTokenIsDash = tokenList.typesAheadAre(DashToken.TYPE);
-        boolean firstTokenIsStar = tokenList.typesAheadAre(StarToken.TYPE);
+        int leadingWhitespace = tokenList.nextNonWhitespaceOffset();
+        TokenList firstNonWhitespaceTokens = tokenList.offset(leadingWhitespace);
+        boolean firstTokenIsDash = firstNonWhitespaceTokens.typesAheadAre(DashToken.TYPE);
+        boolean firstTokenIsStar = firstNonWhitespaceTokens.typesAheadAre(StarToken.TYPE);
 
         if (!(firstTokenIsDash ^ firstTokenIsStar)) {
             return NullNode.INSTANCE;
         }
-        int consumed = 1;
+
+        int consumed = 1 + leadingWhitespace;
         MatchedAndConsumed potentialListItems = matchZeroOrMore(tokenList.offset(consumed), new SentenceParser());
         if (potentialListItems.getMatched().isEmpty()) {
             return NullNode.INSTANCE;
