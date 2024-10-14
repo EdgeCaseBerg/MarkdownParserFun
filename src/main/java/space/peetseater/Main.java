@@ -10,8 +10,8 @@ import space.peetseater.tokenizer.Tokenizer;
 public class Main {
     public static void main(String[] args) {
         Tokenizer tokenizer = new Tokenizer();
-        String doesntWorkYet = "\nHello *world*\nHow _are_ you?\n\n";
-        TokenList tokens = tokenizer.tokenize(doesntWorkYet);
+        String sampleInput = " - but what about\n - with space at the start\n\n";
+        TokenList tokens = tokenizer.tokenize(sampleInput);
         for (AbstractToken token : tokens) {
             System.out.println(token);
         }
