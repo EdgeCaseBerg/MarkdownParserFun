@@ -1,4 +1,4 @@
-package space.peetseater.tokenizer;
+package space.peetseater.tokenizer.scanners;
 
 import space.peetseater.tokenizer.tokens.AbstractToken;
 import space.peetseater.tokenizer.tokens.NullToken;

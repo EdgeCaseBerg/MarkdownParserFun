@@ -1,5 +1,8 @@
 package space.peetseater.tokenizer;
 
+import space.peetseater.tokenizer.scanners.SimpleScanner;
+import space.peetseater.tokenizer.scanners.TextScanner;
+import space.peetseater.tokenizer.scanners.TokenScanner;
 import space.peetseater.tokenizer.tokens.AbstractToken;
 import space.peetseater.tokenizer.tokens.EndOfFileToken;
 

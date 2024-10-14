@@ -2,6 +2,7 @@ package space.peetseater.tokenizer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import space.peetseater.tokenizer.scanners.TextScanner;
 import space.peetseater.tokenizer.tokens.AbstractToken;
 import space.peetseater.tokenizer.tokens.NullToken;
 
