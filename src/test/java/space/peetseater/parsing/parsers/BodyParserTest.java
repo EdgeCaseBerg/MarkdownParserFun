@@ -51,6 +51,34 @@ class BodyParserTest {
         assertInstanceOf(TextNode.class, ((ParagraphNode)textToken).getSentences().get(0));
 
         assertEquals(3, bodyNode.getBodyParts().size());
+    }
+
+    @Test
+    public void parses_lists_as_body() {
+        AbstractMarkdownNode node = bodyParser.match(new TokenList(List.of(
+                DashToken.INSTANCE, new TextToken("1st list item no 1"), NewLineToken.INSTANCE,
+                DashToken.INSTANCE, new TextToken("1st list item no 2"), NewLineToken.INSTANCE,
+                DashToken.INSTANCE, new TextToken("1st list item no 3"), NewLineToken.INSTANCE,
+                NewLineToken.INSTANCE,
+                new TextToken("Paragraph"),
+                NewLineToken.INSTANCE, NewLineToken.INSTANCE,
+                DashToken.INSTANCE, new TextToken("2nd list 1 item"), NewLineToken.INSTANCE,
+                DashToken.INSTANCE, new TextToken("2nd list 2 item"), NewLineToken.INSTANCE,
+                DashToken.INSTANCE, new TextToken("2nd list 3 item"), NewLineToken.INSTANCE,
+                EndOfFileToken.INSTANCE
+        )));
+        assertNotEquals(NullNode.INSTANCE, node);
+        assertInstanceOf(BodyNode.class, node);
+        BodyNode bodyNode = (BodyNode) node;
+        AbstractMarkdownNode listOne = bodyNode.getBodyParts().get(0);
+        assertInstanceOf(ListNode.class, listOne);
+
+        assertEquals(3, bodyNode.getBodyParts().size());
+        AbstractMarkdownNode p = bodyNode.getBodyParts().get(1);
+        assertInstanceOf(ParagraphNode.class, p);
+
+        AbstractMarkdownNode listTwo = bodyNode.getBodyParts().get(2);
+        assertInstanceOf(ListNode.class, listTwo);
 
     }
 
