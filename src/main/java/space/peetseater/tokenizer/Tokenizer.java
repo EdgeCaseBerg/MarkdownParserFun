@@ -23,11 +23,14 @@ public class Tokenizer {
             return List.of(EndOfFileToken.INSTANCE);
         }
 
-        AbstractToken token = scanOneToken(markdown);
-        String remaining = markdown.substring(token.length());
-        List<AbstractToken> tokens = new LinkedList<AbstractToken>();
-        tokens.add(token);
-        tokens.addAll(tokensAsList(remaining));
+        List<AbstractToken> tokens = new LinkedList<>();
+        while (!markdown.isEmpty()) {
+            AbstractToken token = scanOneToken(markdown);
+            tokens.add(token);
+            markdown = markdown.substring(token.length());
+        }
+
+        tokens.add(EndOfFileToken.INSTANCE);
         return tokens;
     }
 
