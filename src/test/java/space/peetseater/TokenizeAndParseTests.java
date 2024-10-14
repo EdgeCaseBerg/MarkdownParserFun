@@ -89,6 +89,12 @@ public class TokenizeAndParseTests {
                     NV(TextNode.class, " a list item"),
                     NV(TextNode.class, " a list item again")
                 )
+            ),
+            Arguments.of(1, 1, 0, " - but what about\n - with space at the start\n\n",
+                List.of(
+                    NV(TextNode.class, " but what about"),
+                    NV(TextNode.class, " with space at the start")
+                )
             )
         );
     }
