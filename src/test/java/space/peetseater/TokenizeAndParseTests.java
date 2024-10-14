@@ -1,7 +1,6 @@
 package space.peetseater;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -73,6 +72,15 @@ public class TokenizeAndParseTests {
                     NV(ItalicsNode.class, "well formed"),
                     NV(TextNode.class, " markdown. "),
                     NV(BoldNode.class, "I guess")
+                )
+            ),
+            Arguments.of(1, 0, 1, "\nHello *world*\nHow _are_ you?\n\n",
+                List.of(
+                    NV(TextNode.class, "Hello "),
+                    NV(BoldNode.class, "world"),
+                    NV(TextNode.class, "How "),
+                    NV(ItalicsNode.class, "are"),
+                    NV(TextNode.class, " you?")
                 )
             )
         );
