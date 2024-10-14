@@ -5,6 +5,7 @@ import space.peetseater.tokenizer.tokens.EndOfFileToken;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class Tokenizer {
     List<TokenScanner> tokenScanners = List.of(
@@ -43,7 +44,9 @@ public class Tokenizer {
         }
         throw new IllegalArgumentException("No scanner matched provided markdown: %s.\nAttempted Scanners: %s".formatted(
            markdown,
-           tokenScanners.stream().map(tokenScanner -> tokenScanner.getClass().getSimpleName()).reduce("", "%s, %s"::formatted)
+           tokenScanners.stream()
+                   .map(tokenScanner -> tokenScanner.getClass().getSimpleName())
+                   .collect(Collectors.joining(", "))
         ));
     }
 }
