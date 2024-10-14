@@ -6,4 +6,8 @@ public class TextToken extends ConcreteToken {
     public TextToken(String value) {
         super(TYPE, value);
     }
+
+    public boolean isEmpty() {
+        return value.trim().isEmpty();
+    }
 }
