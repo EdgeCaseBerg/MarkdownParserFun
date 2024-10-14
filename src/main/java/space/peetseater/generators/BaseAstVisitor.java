@@ -34,6 +34,9 @@ public abstract class BaseAstVisitor implements AstVisitor {
     }
 
     @Override
+    public void visit(HeadingNode headingNode) {}
+
+    @Override
     public void visit(ListItemNode node) {
         for (AbstractMarkdownNode child : node.getRuns()) {
             child.accept(this);

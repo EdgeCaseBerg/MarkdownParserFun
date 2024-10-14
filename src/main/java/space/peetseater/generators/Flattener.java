@@ -65,6 +65,11 @@ public class Flattener extends BaseAstVisitor {
         this.nodes.add(node);
     }
 
+    @Override
+    public void visit(HeadingNode headingNode) {
+        this.nodes.add(headingNode);
+    }
+
     public int getBodyCounts() {
         return bodyCounts;
     }

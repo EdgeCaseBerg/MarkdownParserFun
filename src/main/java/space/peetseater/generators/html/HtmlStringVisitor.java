@@ -15,15 +15,20 @@ public class HtmlStringVisitor extends BaseAstVisitor {
         indentString = "  ";
     }
 
-    @Override
-    public void visit(BoldNode node) {
-        createTagWithTextFromNodeValue(node, "strong");
-    }
-
     protected void createTagWithTextFromNodeValue(MarkdownNode node, String tag) {
         stringBuilder.append("<%s>".formatted(tag));
         stringBuilder.append(node.getValue());
         stringBuilder.append("</%s>".formatted(tag));
+    }
+
+    @Override
+    public void visit(HeadingNode headingNode) {
+        createTagWithTextFromNodeValue(headingNode, "h" + headingNode.getLevel());
+    }
+
+    @Override
+    public void visit(BoldNode node) {
+        createTagWithTextFromNodeValue(node, "strong");
     }
 
     private void indent() {
