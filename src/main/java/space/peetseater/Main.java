@@ -11,8 +11,7 @@ public class Main {
     public static void main(String[] args) {
         Tokenizer tokenizer = new Tokenizer();
         String doesntWorkYet = "\nHello *world*\nHow _are_ you?\n\n";
-        String wellformed = "Hello there\n\nParagraph\n\nThis is _well formed_ markdown. *I guess*\n\n";
-        TokenList tokens = tokenizer.tokenize(wellformed);
+        TokenList tokens = tokenizer.tokenize(doesntWorkYet);
         for (AbstractToken token : tokens) {
             System.out.println(token);
         }
