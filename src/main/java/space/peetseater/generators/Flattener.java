@@ -10,11 +10,13 @@ public class Flattener extends BaseAstVisitor {
     private int bodyCounts;
     private int listCounts;
     private int paragraphCounts;
+    private int headingCounts;
 
     public Flattener() {
         this.paragraphCounts = 0;
         this.listCounts = 0;
         this.bodyCounts = 0;
+        this.headingCounts = 0;
         this.nodes = new LinkedList<AbstractMarkdownNode>();
     }
 
@@ -67,6 +69,7 @@ public class Flattener extends BaseAstVisitor {
 
     @Override
     public void visit(HeadingNode headingNode) {
+        headingCounts++;
         this.nodes.add(headingNode);
     }
 
@@ -80,5 +83,9 @@ public class Flattener extends BaseAstVisitor {
 
     public int getParagraphCounts() {
         return paragraphCounts;
+    }
+
+    public int getHeadingCounts() {
+        return headingCounts;
     }
 }
