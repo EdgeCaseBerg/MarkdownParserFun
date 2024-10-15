@@ -2,6 +2,7 @@ package space.peetseater;
 
 import org.junit.jupiter.api.BeforeEach;
 
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -11,6 +12,7 @@ import space.peetseater.parsing.ast.*;
 import space.peetseater.tokenizer.TokenList;
 import space.peetseater.tokenizer.Tokenizer;
 
+import java.util.Collection;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -111,4 +113,27 @@ public class TokenizeAndParseTests {
 
     // Wish we had a plain old tuple class.
     public record NodeAndValue(Class<? extends MarkdownNode> clazz, String value) {}
+
+    @Test
+    public void parse_headers_as_part_of_body() {
+        String sample = "#Heading 1\n##Heading 2\n\n### Heading 3\n\nParagraph\n\n#### Heading 4";
+        TokenList tokens = tokenizer.tokenize(sample);
+        AbstractMarkdownNode dom = markdownParser.parse(tokens);
+        Flattener flattener = new Flattener();
+        dom.accept(flattener);
+        LinkedList<AbstractMarkdownNode> nodes = flattener.getNodes();
+        List<AbstractMarkdownNode> expected = List.of(
+            new HeadingNode(List.of(new TextNode("Heading 1", 1)), 1, 1),
+            new HeadingNode(List.of(new TextNode("Heading 2", 1)), 2, 1),
+            new HeadingNode(List.of(new TextNode(" Heading 3", 1)), 3, 1),
+            new TextNode("Paragraph", 1),
+            new HeadingNode(List.of(new TextNode(" Heading 4", 1)), 4, 1)
+        );
+        Iterator<AbstractMarkdownNode> actual = nodes.iterator();
+        for (AbstractMarkdownNode node : expected) {
+            AbstractMarkdownNode actualNode = actual.next();
+            assertInstanceOf(node.getClass(), actualNode);
+        }
+        assertEquals(4, flattener.getHeadingCounts());
+    }
 }
