@@ -23,7 +23,12 @@ public class HtmlStringVisitor extends BaseAstVisitor {
 
     @Override
     public void visit(HeadingNode headingNode) {
-        createTagWithTextFromNodeValue(headingNode, "h" + headingNode.getLevel());
+        stringBuilder.append("<h%d>".formatted(headingNode.getLevel()));
+        for (AbstractMarkdownNode child : headingNode.getChildren()) {
+            child.accept(this);
+        }
+        stringBuilder.append("</h%d>".formatted(headingNode.getLevel()));
+        stringBuilder.append("\n");
     }
 
     @Override
