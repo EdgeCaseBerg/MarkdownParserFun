@@ -20,4 +20,6 @@ public interface AstVisitor {
     void visit(UnorderedListNode listNode);
 
     void visit(HeadingNode headingNode);
+
+    void visit(InlineCodeNode inlineCodeNode);
 }
