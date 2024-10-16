@@ -116,7 +116,7 @@ public class TokenizeAndParseTests {
 
     @Test
     public void parse_headers_as_part_of_body() {
-        String sample = "#Heading 1\n##Heading 2\n\n### Heading 3\n\nParagraph\n\n#### Heading 4";
+        String sample = "#Heading 1\n##Heading 2\n\n### Heading 3\n\nParagraph\n\n#### Heading 4 # pound sign";
         TokenList tokens = tokenizer.tokenize(sample);
         AbstractMarkdownNode dom = markdownParser.parse(tokens);
         Flattener flattener = new Flattener();
@@ -127,13 +127,32 @@ public class TokenizeAndParseTests {
             new HeadingNode(List.of(new TextNode("Heading 2", 1)), 2, 1),
             new HeadingNode(List.of(new TextNode(" Heading 3", 1)), 3, 1),
             new TextNode("Paragraph", 1),
-            new HeadingNode(List.of(new TextNode(" Heading 4", 1)), 4, 1)
+            new HeadingNode(
+                List.of(
+                    new TextNode(" Heading 4 ", 1),
+                    new TextNode("#", 1),
+                    new TextNode(" pound sign", 1)
+            ), 4, 1)
         );
         Iterator<AbstractMarkdownNode> actual = nodes.iterator();
         for (AbstractMarkdownNode node : expected) {
             AbstractMarkdownNode actualNode = actual.next();
             assertInstanceOf(node.getClass(), actualNode);
+            if (actualNode instanceof HeadingNode headNode) {
+                List<AbstractMarkdownNode> actualChildren = headNode.getChildren();
+                List<AbstractMarkdownNode> expectedChildren = ((HeadingNode)node).getChildren();
+                Iterator<AbstractMarkdownNode> childIter = actualChildren.iterator();
+                for (AbstractMarkdownNode expectedChild : expectedChildren) {
+                    AbstractMarkdownNode actualNext = childIter.next();
+                    assertInstanceOf(expectedChild.getClass(), actualNext);
+                    if (actualNext instanceof TextNode textNode) {
+                        assertEquals(((TextNode)expectedChild).getValue(), textNode.getValue());
+                    }
+                }
+            }
         }
         assertEquals(4, flattener.getHeadingCounts());
     }
+
+
 }
