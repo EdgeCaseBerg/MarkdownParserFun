@@ -12,8 +12,8 @@ import java.util.stream.Collectors;
 
 public class Tokenizer {
     List<TokenScanner> tokenScanners = List.of(
-      new SimpleScanner(),
-      new TextScanner()
+        new TextScanner(),
+        new SimpleScanner()
     );
 
     public TokenList tokenize(String markdown) {

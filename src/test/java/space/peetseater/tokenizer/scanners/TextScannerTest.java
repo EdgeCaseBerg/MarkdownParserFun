@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import space.peetseater.tokenizer.tokens.AbstractToken;
 import space.peetseater.tokenizer.tokens.NullToken;
+import space.peetseater.tokenizer.tokens.TextToken;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,6 +32,14 @@ class TextScannerTest {
     public void returns_null_token_if_no_match_at_start_of_input() {
         AbstractToken token = textScanner.fromString("_this wont be consumed_");
         assertEquals(NullToken.INSTANCE, token);
+    }
+
+    @Test
+    public void handles_escaped_characters_as_literals() {
+        AbstractToken token = textScanner.fromString("Hello \\# there");
+        assertInstanceOf(TextToken.class, token);
+        TextToken text = (TextToken) token;
+        assertEquals("Hello # there", text.getValue());
     }
 
 }
