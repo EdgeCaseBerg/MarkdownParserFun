@@ -68,6 +68,11 @@ public class Flattener extends BaseAstVisitor {
     }
 
     @Override
+    public void visit(InlineCodeNode inlineCodeNode) {
+        this.nodes.add(inlineCodeNode);
+    }
+
+    @Override
     public void visit(HeadingNode headingNode) {
         headingCounts++;
         this.nodes.add(headingNode);

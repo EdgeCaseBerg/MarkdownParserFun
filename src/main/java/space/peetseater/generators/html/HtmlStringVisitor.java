@@ -95,6 +95,11 @@ public class HtmlStringVisitor extends BaseAstVisitor {
         stringBuilder.append("\n</ul>\n");
     }
 
+    @Override
+    public void visit(InlineCodeNode inlineCodeNode) {
+        createTagWithTextFromNodeValue(inlineCodeNode, "code");
+    }
+
     private String getIndentString() {
         return indentString;
     }
