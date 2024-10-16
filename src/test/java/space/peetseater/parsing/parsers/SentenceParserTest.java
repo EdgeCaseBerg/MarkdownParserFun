@@ -4,6 +4,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import space.peetseater.parsing.ast.*;
 import space.peetseater.tokenizer.TokenList;
+import space.peetseater.tokenizer.tokens.BacktickToken;
 import space.peetseater.tokenizer.tokens.StarToken;
 import space.peetseater.tokenizer.tokens.TextToken;
 import space.peetseater.tokenizer.tokens.UnderscoreToken;
@@ -59,5 +60,17 @@ class SentenceParserTest {
         assertInstanceOf(ItalicsNode.class, node);
         assertEquals("Hello", ((ItalicsNode) node).getValue());
         assertEquals(3, node.getConsumed());
+    }
+
+    @Test
+    public void should_parse_backticks_as_inline_code_in_a_sentence() {
+        AbstractMarkdownNode node = sentenceParser.match(new TokenList(List.of(
+            BacktickToken.INSTANCE,
+            new TextToken("code"),
+            BacktickToken.INSTANCE
+        )));
+        assertInstanceOf(InlineCodeNode.class, node);
+        InlineCodeNode inlineCodeNode = (InlineCodeNode) node;
+        assertEquals("code", inlineCodeNode.getValue());
     }
 }

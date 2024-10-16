@@ -6,6 +6,6 @@ import space.peetseater.tokenizer.TokenList;
 public class SentenceParser extends TokenParser {
     @Override
     public AbstractMarkdownNode match(TokenList tokenList) {
-        return matchFirst(tokenList, new ItalicsParser(), new BoldParser(), new TextParser());
+        return matchFirst(tokenList, new ItalicsParser(), new BoldParser(), new TextParser(), new InlineCodeParser());
     }
 }
