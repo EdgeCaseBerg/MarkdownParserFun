@@ -10,7 +10,7 @@ import space.peetseater.tokenizer.Tokenizer;
 public class Main {
     public static void main(String[] args) {
         Tokenizer tokenizer = new Tokenizer();
-        String sampleInput = "#Heading 1\n##Heading 2\n\n### Heading 3\n\nParagraph 1\n\n## heading with # sign";
+        String sampleInput = "# Heading\n\nHello `code` how are you";
         TokenList tokens = tokenizer.tokenize(sampleInput);
         for (AbstractToken token : tokens) {
             System.out.println(token);
