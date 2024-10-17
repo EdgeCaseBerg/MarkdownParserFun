@@ -2,11 +2,9 @@ package space.peetseater.parsing.parsers;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import space.peetseater.parsing.ast.AbstractMarkdownNode;
-import space.peetseater.parsing.ast.NullNode;
-import space.peetseater.parsing.ast.ParagraphNode;
-import space.peetseater.parsing.ast.TextNode;
+import space.peetseater.parsing.ast.*;
 import space.peetseater.tokenizer.TokenList;
+import space.peetseater.tokenizer.tokens.BacktickToken;
 import space.peetseater.tokenizer.tokens.EndOfFileToken;
 import space.peetseater.tokenizer.tokens.NewLineToken;
 import space.peetseater.tokenizer.tokens.TextToken;
@@ -89,6 +87,28 @@ class ParagraphParserTest {
         assertEquals(2, node.getConsumed());
         assertEquals(1, p.getSentences().size());
         assertEquals("Sentence!", ((TextNode)p.getSentences().get(0)).getValue());
+    }
+
+    @Test
+    public void return_paragraph_for_text_and_backticks() {
+        TokenList tokenList = new TokenList(List.of(
+            new TextToken("Start "),
+            BacktickToken.INSTANCE,
+            new TextToken("code"),
+            BacktickToken.INSTANCE,
+            new TextToken(" and regular text"),
+            EndOfFileToken.INSTANCE
+        ));
+        AbstractMarkdownNode node = paragraphParser.match(tokenList);
+        assertInstanceOf(ParagraphNode.class, node);
+        ParagraphNode p = (ParagraphNode) node;
+        assertEquals(6, node.getConsumed());
+        assertEquals(3, p.getSentences().size());
+        InlineCodeNode inlineCodeNode = (InlineCodeNode) p.getSentences().get(1);
+        assertEquals("code", inlineCodeNode.getValue());
+
+        TextNode secondHalf = (TextNode) p.getSentences().get(2);
+        assertEquals(" and regular text", secondHalf.getValue());
     }
 
 }
