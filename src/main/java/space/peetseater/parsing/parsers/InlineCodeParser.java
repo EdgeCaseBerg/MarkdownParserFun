@@ -21,5 +21,4 @@ public class InlineCodeParser extends TokenParser {
 
         return NullNode.INSTANCE;
     }
-
 }
