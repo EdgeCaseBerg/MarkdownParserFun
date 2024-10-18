@@ -100,6 +100,11 @@ public class HtmlStringVisitor extends BaseAstVisitor {
         createTagWithTextFromNodeValue(inlineCodeNode, "code");
     }
 
+    @Override
+    public void visit(CodeBlockNode codeBlockNode) {
+        createTagWithTextFromNodeValue(codeBlockNode, "pre");
+    }
+
     private String getIndentString() {
         return indentString;
     }

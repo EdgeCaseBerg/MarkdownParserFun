@@ -22,4 +22,6 @@ public interface AstVisitor {
     void visit(HeadingNode headingNode);
 
     void visit(InlineCodeNode inlineCodeNode);
+
+    void visit(CodeBlockNode codeBlockNode);
 }

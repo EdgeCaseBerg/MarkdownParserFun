@@ -45,4 +45,7 @@ public abstract class BaseAstVisitor implements AstVisitor {
             child.accept(this);
         }
     }
+
+    @Override
+    public void visit(CodeBlockNode codeBlockNode) {}
 }
