@@ -14,6 +14,7 @@ public class BodyParser extends TokenParser {
     public BodyParser() {
          parsersToApply = new LinkedList<TokenParser>();
          parsersToApply.add(new HeadingParser());
+         parsersToApply.add(new CodeBlockParser());
          parsersToApply.add(new ParagraphParser());
          parsersToApply.add(new ListParser());
          parsersToApply.add(new NewLineParser());
