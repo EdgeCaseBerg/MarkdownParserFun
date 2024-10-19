@@ -41,7 +41,7 @@ public class CodeBlockParser extends TokenParser {
                 if (tokenIsBackTick) {
                     // Time to stop!
                     endingTicksFound = true;
-                    continue; // Skip because we don't want to add ` to the tokens.
+                    break; // Skip because we don't want to add ` to the tokens.
                 }
             }
             potentialCodeBlock.add(token);
