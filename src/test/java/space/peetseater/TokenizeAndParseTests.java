@@ -11,6 +11,7 @@ import space.peetseater.parsing.MarkdownParser;
 import space.peetseater.parsing.ast.*;
 import space.peetseater.tokenizer.TokenList;
 import space.peetseater.tokenizer.Tokenizer;
+import space.peetseater.tokenizer.tokens.NewLineToken;
 
 import java.util.Collection;
 import java.util.Iterator;
@@ -96,6 +97,12 @@ public class TokenizeAndParseTests {
                 List.of(
                     NV(TextNode.class, " but what about"),
                     NV(TextNode.class, " with space at the start")
+                )
+            ),
+            Arguments.of(2,0, 1, "```\nHello there<ignoredtag>yay</ignoredtag>```\n",
+                List.of(
+                    NV(CodeBlockNode.class, "\nHello there<ignoredtag>yay</ignoredtag>"),
+                    NV(TextNode.class, "\n")
                 )
             )
         );
