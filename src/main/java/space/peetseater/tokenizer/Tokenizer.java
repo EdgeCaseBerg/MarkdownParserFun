@@ -25,6 +25,7 @@ public class Tokenizer {
         int openParenthesis = 0;
         for (int i = 1; i < tokens.size(); i++) {
             AbstractToken token = tokens.get(i);
+            // Note: These Ifs can probably become a Switch statement later.
             if (token.equals(PoundToken.INSTANCE)) {
                 AbstractToken previousToken = tokens.get(i - 1);
                 boolean poundTokenOrNewline = previousToken.isOneOfType(PoundToken.TYPE, NewLineToken.TYPE);
