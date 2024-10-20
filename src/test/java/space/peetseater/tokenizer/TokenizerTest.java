@@ -51,4 +51,34 @@ class TokenizerTest {
         assertEquals(expectedTypes, actual);
     }
 
+    @Test
+    public void text_within_brackets_treats_most_tokens_as_text() {
+        TokenList tokens = tokenizer.tokenize("[text][# is text][*bold*][_italics_][newline\nokay][(text)]");
+        List<String> expectedTypes = List.of(
+            BracketStartToken.TYPE, TextToken.TYPE, BracketEndToken.TYPE,
+            BracketStartToken.TYPE, TextToken.TYPE, TextToken.TYPE, BracketEndToken.TYPE,
+            BracketStartToken.TYPE, StarToken.TYPE, TextToken.TYPE, StarToken.TYPE, BracketEndToken.TYPE,
+            BracketStartToken.TYPE, UnderscoreToken.TYPE, TextToken.TYPE, UnderscoreToken.TYPE, BracketEndToken.TYPE,
+            BracketStartToken.TYPE, TextToken.TYPE, TextToken.TYPE, TextToken.TYPE, BracketEndToken.TYPE,
+            BracketStartToken.TYPE, TextToken.TYPE, TextToken.TYPE, TextToken.TYPE, BracketEndToken.TYPE,
+            EndOfFileToken.TYPE
+        );
+        List<String> actual = tokens.stream().map(AbstractToken::getType).toList();
+        assertEquals(expectedTypes, actual);
+    }
+
+    @Test
+    public void remove_meaning_from_brackets_if_no_matching_bracket_exists() {
+        TokenList tokens = tokenizer.tokenize("text [ this is not a link [this is] and not this [");
+        List<String> expectedTypes = List.of(
+            TextToken.TYPE,
+            TextToken.TYPE, TextToken.TYPE,
+            BracketStartToken.TYPE, TextToken.TYPE, BracketEndToken.TYPE,
+            TextToken.TYPE, TextToken.TYPE,
+            EndOfFileToken.TYPE
+        );
+        List<String> actual = tokens.stream().map(AbstractToken::getType).toList();
+        assertEquals(expectedTypes, actual);
+    }
+
 }
