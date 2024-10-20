@@ -1,5 +1,6 @@
 package space.peetseater.tokenizer;
 
+import org.w3c.dom.Text;
 import space.peetseater.tokenizer.scanners.SimpleScanner;
 import space.peetseater.tokenizer.scanners.TextScanner;
 import space.peetseater.tokenizer.scanners.TokenScanner;
@@ -29,8 +30,28 @@ public class Tokenizer {
             openParenthesis += collapseParenStartTokenIfNeeded(tokens, token, i);
             openParenthesis -= collapseParentStopTokenIfNeeded(tokens, token, i, openParenthesis);
             collapseMeaninglessBrackets(tokens, token, i);
+            collapseColonsThatAreNotPartOfDefinitions(tokens, token, i);
         }
         return tokens;
+    }
+
+    private void collapseColonsThatAreNotPartOfDefinitions(List<AbstractToken> tokens, AbstractToken token, int i) {
+        if (token.isOneOfType(ColonToken.TYPE)) {
+            // Does this come after a ] ?
+            AbstractToken previous = tokens.get(i - 1);
+            boolean hasBracketBehind = previous.isOneOfType(BracketEndToken.TYPE);
+            if (!hasBracketBehind) {
+                // If not this is just a colon in text somewhere.
+                tokens.set(i, new TextToken(token.getValue()));
+            }
+            if (i + 1 < tokens.size() && tokens.get(i + 1).isOneOfType(TextToken.TYPE)) {
+                TextToken next = (TextToken) tokens.get(i + 1);
+                boolean whiteSpaceAfterColon = next.getValue().startsWith(" ");
+                if (whiteSpaceAfterColon) {
+                    tokens.set(i, new TextToken(token.getValue()));
+                }
+            }
+        }
     }
 
     private void collapseMeaninglessBrackets(List<AbstractToken> tokens, AbstractToken token, int i) {
