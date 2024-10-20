@@ -28,8 +28,54 @@ public class Tokenizer {
             collapsePoundTokenIfNeeded(tokens, token, i);
             openParenthesis += collapseParenStartTokenIfNeeded(tokens, token, i);
             openParenthesis -= collapseParentStopTokenIfNeeded(tokens, token, i, openParenthesis);
+            collapseMeaninglessBrackets(tokens, token, i);
         }
         return tokens;
+    }
+
+    private void collapseMeaninglessBrackets(List<AbstractToken> tokens, AbstractToken token, int i) {
+        // If it's a bracket, then normalize the text in between.
+        // But leave the inline formatting such as bold, italics, underline alone
+        if (token.isOneOfType(BracketStartToken.TYPE)) {
+            // Scan forward to find the end bracket
+            int endingBracketIndex = i;
+            for (int j = i + 1; j < tokens.size(); j++) {
+                if (tokens.get(j).isOneOfType(BracketEndToken.TYPE)) {
+                    endingBracketIndex = j;
+                    break;
+                }
+                if (tokens.get(j).isOneOfType(BracketStartToken.TYPE)) {
+                    // Wait, [ [ ? the first of these cannot be a link indicator.
+                    // Unless I want to enable something like [link[]] but I don't think I have that case
+                    break;
+                }
+            }
+            // If we found the ending bracket
+            if (endingBracketIndex != i) {
+                removeNonFormatRelatedTokensFromRange(i, endingBracketIndex, tokens);
+            } else {
+                // Otherwise, this bracket is just a random stand alone bracket doing nothing.
+                tokens.set(i, new TextToken(token.getValue()));
+            }
+        }
+    }
+
+    private void removeNonFormatRelatedTokensFromRange(int startExclusive, int endingExclusive, List<AbstractToken> tokens) {
+        for (int i = startExclusive + 1; i < endingExclusive; i++) {
+            AbstractToken tokenToCheck = tokens.get(i);
+            if (tokenToCheck.isOneOfType(
+                AngleStartToken.TYPE,
+                AngleStopToken.TYPE,
+                ColonToken.TYPE,
+                DashToken.TYPE,
+                EqualsToken.TYPE,
+                NewLineToken.TYPE,
+                ParenStartToken.TYPE,
+                ParenStopToken.TYPE
+            )) {
+                tokens.set(i, new TextToken(tokenToCheck.getValue()));
+            }
+        }
     }
 
     private int collapseParentStopTokenIfNeeded(List<AbstractToken> tokens, AbstractToken token, int i, int openParenthesis) {
