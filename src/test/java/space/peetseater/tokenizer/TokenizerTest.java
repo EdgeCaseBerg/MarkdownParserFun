@@ -2,11 +2,9 @@ package space.peetseater.tokenizer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.w3c.dom.Text;
-import space.peetseater.tokenizer.tokens.EndOfFileToken;
-import space.peetseater.tokenizer.tokens.NewLineToken;
-import space.peetseater.tokenizer.tokens.PoundToken;
-import space.peetseater.tokenizer.tokens.TextToken;
+import space.peetseater.tokenizer.tokens.*;
+
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,6 +35,20 @@ class TokenizerTest {
         assertEquals("This is not a ", ((TextToken)tokens.get(0)).getValue());
         assertEquals("#", ((TextToken)tokens.get(1)).getValue());
         assertEquals(" Header", ((TextToken)tokens.get(2)).getValue());
+    }
+
+    @Test
+    public void produce_paren_tokens_if_they_are_part_of_a_bracket_link() {
+        TokenList tokens = tokenizer.tokenize("[bla](a-link)");
+        List<String> expectedTypes = List.of(
+            BracketStartToken.TYPE, TextToken.TYPE, BracketEndToken.TYPE,
+            ParenStartToken.TYPE,
+            TextToken.TYPE, TextToken.TYPE, TextToken.TYPE, // a,-,link are all tokens with meaning removed.
+            ParenStopToken.TYPE,
+            EndOfFileToken.TYPE
+        );
+        List<String> actual = tokens.stream().map(AbstractToken::getType).toList();
+        assertEquals(expectedTypes, actual);
     }
 
 }
