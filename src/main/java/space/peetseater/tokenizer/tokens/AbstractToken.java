@@ -1,5 +1,7 @@
 package space.peetseater.tokenizer.tokens;
 
+import java.util.Arrays;
+
 abstract public class AbstractToken {
     protected String type;
     protected String value;
@@ -8,6 +10,11 @@ abstract public class AbstractToken {
         this.type = type;
         this.value = value;
     }
+
+    public boolean isOneOfType(String ...types) {
+        return Arrays.asList(types).contains(type);
+    }
+
 
     public int length() {
         return value == null ? 0 : value.length();
