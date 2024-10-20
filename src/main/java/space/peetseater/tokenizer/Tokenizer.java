@@ -27,7 +27,7 @@ public class Tokenizer {
             AbstractToken token = tokens.get(i);
             if (token.equals(PoundToken.INSTANCE)) {
                 AbstractToken previousToken = tokens.get(i - 1);
-                boolean poundTokenOrNewline = previousToken.equals(PoundToken.INSTANCE) || previousToken.equals(NewLineToken.INSTANCE);
+                boolean poundTokenOrNewline = previousToken.isOneOfType(PoundToken.TYPE, NewLineToken.TYPE);
                 if (!poundTokenOrNewline) {
                     tokens.set(i, new TextToken(PoundToken.VALUE));
                 }
