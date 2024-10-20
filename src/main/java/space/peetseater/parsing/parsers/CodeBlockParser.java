@@ -29,6 +29,8 @@ public class CodeBlockParser extends TokenParser {
         TokenList afterTicks = tokenList.offset(3);
         LinkedList<AbstractToken> potentialCodeBlock = new LinkedList<>();
         boolean endingTicksFound = false;
+        // Note: this doesn't handle the possibility of ``` inside of an ``` block, but I'm okay with that
+        // for now because I'm pretty sure I've never done that ever in my markdown I'll be parsing.
         for (int i = 0; i < afterTicks.size(); i++) {
             AbstractToken token = afterTicks.get(i);
             if (token.getType().equals(BacktickToken.TYPE)) {
