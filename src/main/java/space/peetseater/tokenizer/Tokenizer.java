@@ -25,48 +25,61 @@ public class Tokenizer {
         int openParenthesis = 0;
         for (int i = 1; i < tokens.size(); i++) {
             AbstractToken token = tokens.get(i);
-            // Note: These Ifs can probably become a Switch statement later.
-            if (token.equals(PoundToken.INSTANCE)) {
-                AbstractToken previousToken = tokens.get(i - 1);
-                boolean poundTokenOrNewline = previousToken.isOneOfType(PoundToken.TYPE, NewLineToken.TYPE);
-                if (!poundTokenOrNewline) {
-                    tokens.set(i, new TextToken(PoundToken.VALUE));
-                }
-            }
-            // The only meaning a ( has, is if it's after a ]
-            if (token.equals(ParenStartToken.INSTANCE)) {
-                AbstractToken previousToken = tokens.get(i - 1);
-                if (!previousToken.isOneOfType(BracketEndToken.TYPE)) {
-                    tokens.set(i, new TextToken(ParenStartToken.VALUE));
-                } else {
-                    openParenthesis++;
-                }
-            }
-            // The only meaning a ) has is if there's currently an open (
-            if (token.equals(ParenStopToken.INSTANCE)) {
-                if (openParenthesis == 0) {
-                    tokens.set(i, new TextToken(ParenStopToken.VALUE));
-                } else {
-                    // We are closing a tag, so reduce the tokens backwards to the opening
-                    // parenthesis into plain text and remove their meaning.
-                    for (int j = i - 1; j > 0; j--) {
-                        AbstractToken priorToken = tokens.get(j);
-                        if (priorToken.equals(ParenStartToken.INSTANCE)) {
-                            // Stop the loop.
-                            break;
-                        } else if (priorToken instanceof ConcreteToken concreteToken) {
-                            // don't bother changing something that is already text.
-                            if (concreteToken.getType().equals(TextToken.TYPE)) {
-                                continue;
-                            }
-                            tokens.set(j, new TextToken(concreteToken.getValue()));
-                        }
-                    }
-                    openParenthesis--;
-                }
-            }
+            collapsePoundTokenIfNeeded(tokens, token, i);
+            openParenthesis += collapseParenStartTokenIfNeeded(tokens, token, i);
+            openParenthesis -= collapseParentStopTokenIfNeeded(tokens, token, i, openParenthesis);
         }
         return tokens;
+    }
+
+    private int collapseParentStopTokenIfNeeded(List<AbstractToken> tokens, AbstractToken token, int i, int openParenthesis) {
+        // The only meaning a ) has is if there's currently an open (
+        if (token.equals(ParenStopToken.INSTANCE)) {
+            if (openParenthesis == 0) {
+                tokens.set(i, new TextToken(ParenStopToken.VALUE));
+            } else {
+                // We are closing a tag, so reduce the tokens backwards to the opening
+                // parenthesis into plain text and remove their meaning.
+                for (int j = i - 1; j > 0; j--) {
+                    AbstractToken priorToken = tokens.get(j);
+                    if (priorToken.equals(ParenStartToken.INSTANCE)) {
+                        // Stop the loop.
+                        break;
+                    } else if (priorToken instanceof ConcreteToken concreteToken) {
+                        // don't bother changing something that is already text.
+                        if (concreteToken.getType().equals(TextToken.TYPE)) {
+                            continue;
+                        }
+                        tokens.set(j, new TextToken(concreteToken.getValue()));
+                    }
+                }
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    private int collapseParenStartTokenIfNeeded(List<AbstractToken> tokens, AbstractToken token, int i) {
+        // The only meaning a ( has, is if it's after a ]
+        if (token.equals(ParenStartToken.INSTANCE)) {
+            AbstractToken previousToken = tokens.get(i - 1);
+            if (!previousToken.isOneOfType(BracketEndToken.TYPE)) {
+                tokens.set(i, new TextToken(ParenStartToken.VALUE));
+            } else {
+                return 1;
+            }
+        }
+        return 0;
+    }
+
+    private static void collapsePoundTokenIfNeeded(List<AbstractToken> tokens, AbstractToken token, int i) {
+        if (token.equals(PoundToken.INSTANCE)) {
+            AbstractToken previousToken = tokens.get(i - 1);
+            boolean poundTokenOrNewline = previousToken.isOneOfType(PoundToken.TYPE, NewLineToken.TYPE);
+            if (!poundTokenOrNewline) {
+                tokens.set(i, new TextToken(PoundToken.VALUE));
+            }
+        }
     }
 
     protected List<AbstractToken> tokensAsList(String markdown) {
