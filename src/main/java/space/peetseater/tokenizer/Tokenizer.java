@@ -36,27 +36,28 @@ public class Tokenizer {
     private void collapseMeaninglessBrackets(List<AbstractToken> tokens, AbstractToken token, int i) {
         // If it's a bracket, then normalize the text in between.
         // But leave the inline formatting such as bold, italics, underline alone
-        if (token.isOneOfType(BracketStartToken.TYPE)) {
-            // Scan forward to find the end bracket
-            int endingBracketIndex = i;
-            for (int j = i + 1; j < tokens.size(); j++) {
-                if (tokens.get(j).isOneOfType(BracketEndToken.TYPE)) {
-                    endingBracketIndex = j;
-                    break;
-                }
-                if (tokens.get(j).isOneOfType(BracketStartToken.TYPE)) {
-                    // Wait, [ [ ? the first of these cannot be a link indicator.
-                    // Unless I want to enable something like [link[]] but I don't think I have that case
-                    break;
-                }
+        if (!token.isOneOfType(BracketStartToken.TYPE)) {
+            return;
+        }
+        // Scan forward to find the end bracket
+        int endingBracketIndex = i;
+        for (int j = i + 1; j < tokens.size(); j++) {
+            if (tokens.get(j).isOneOfType(BracketEndToken.TYPE)) {
+                endingBracketIndex = j;
+                break;
             }
-            // If we found the ending bracket
-            if (endingBracketIndex != i) {
-                removeNonFormatRelatedTokensFromRange(i, endingBracketIndex, tokens);
-            } else {
-                // Otherwise, this bracket is just a random stand alone bracket doing nothing.
-                tokens.set(i, new TextToken(token.getValue()));
+            if (tokens.get(j).isOneOfType(BracketStartToken.TYPE)) {
+                // Wait, [ [ ? the first of these cannot be a link indicator.
+                // Unless I want to enable something like [link[]] but I don't think I have that case
+                break;
             }
+        }
+        if (endingBracketIndex != i) {
+            // If we found the ending bracket then normalize the text between
+            removeNonFormatRelatedTokensFromRange(i, endingBracketIndex, tokens);
+        } else {
+            // Otherwise, this bracket is just a random stand alone bracket doing nothing.
+            tokens.set(i, new TextToken(token.getValue()));
         }
     }
 
@@ -107,24 +108,27 @@ public class Tokenizer {
 
     private int collapseParenStartTokenIfNeeded(List<AbstractToken> tokens, AbstractToken token, int i) {
         // The only meaning a ( has, is if it's after a ]
-        if (token.equals(ParenStartToken.INSTANCE)) {
-            AbstractToken previousToken = tokens.get(i - 1);
-            if (!previousToken.isOneOfType(BracketEndToken.TYPE)) {
-                tokens.set(i, new TextToken(ParenStartToken.VALUE));
-            } else {
-                return 1;
-            }
+        if (!token.equals(ParenStartToken.INSTANCE)) {
+            return 0;
         }
-        return 0;
+
+        AbstractToken previousToken = tokens.get(i - 1);
+        if (!previousToken.isOneOfType(BracketEndToken.TYPE)) {
+            tokens.set(i, new TextToken(ParenStartToken.VALUE));
+            return 0;
+        } else {
+            return 1;
+        }
     }
 
     private static void collapsePoundTokenIfNeeded(List<AbstractToken> tokens, AbstractToken token, int i) {
-        if (token.equals(PoundToken.INSTANCE)) {
-            AbstractToken previousToken = tokens.get(i - 1);
-            boolean poundTokenOrNewline = previousToken.isOneOfType(PoundToken.TYPE, NewLineToken.TYPE);
-            if (!poundTokenOrNewline) {
-                tokens.set(i, new TextToken(PoundToken.VALUE));
-            }
+        if (!token.equals(PoundToken.INSTANCE)) {
+            return;
+        }
+        AbstractToken previousToken = tokens.get(i - 1);
+        boolean poundTokenOrNewline = previousToken.isOneOfType(PoundToken.TYPE, NewLineToken.TYPE);
+        if (!poundTokenOrNewline) {
+            tokens.set(i, new TextToken(PoundToken.VALUE));
         }
     }
 
