@@ -1,6 +1,5 @@
 package space.peetseater.tokenizer;
 
-import org.w3c.dom.Text;
 import space.peetseater.tokenizer.scanners.SimpleScanner;
 import space.peetseater.tokenizer.scanners.TextScanner;
 import space.peetseater.tokenizer.scanners.TokenScanner;
@@ -31,8 +30,37 @@ public class Tokenizer {
             openParenthesis -= collapseParentStopTokenIfNeeded(tokens, token, i, openParenthesis);
             collapseMeaninglessBrackets(tokens, token, i);
             collapseColonsThatAreNotPartOfDefinitions(tokens, token, i);
+            i = collapseEqualsIfNotUsedOrAdvanceIterationBy(tokens, token, i);
+            // collapse - that aren't at least 3 --- long and arent followed by a newline
         }
         return tokens;
+    }
+
+    private int collapseEqualsIfNotUsedOrAdvanceIterationBy(List<AbstractToken> tokens, AbstractToken token, int i) {
+        if (!token.isOneOfType(EqualsToken.TYPE)) {
+            return i;
+        }
+        int lastEqualsIndex = i;
+        for (int j = i + 1; j < tokens.size(); j++) {
+            if (!tokens.get(j).isOneOfType(EqualsToken.TYPE)) {
+                lastEqualsIndex = j;
+                break;
+            }
+        }
+        // If we advanced forward, check if there's a newline next
+        if (lastEqualsIndex != i) {
+            if (tokens.get(lastEqualsIndex).isOneOfType(NewLineToken.TYPE)) {
+                // These are real tokens with meaning. Leave them alone and advance
+                // i forward past all of them.
+                return lastEqualsIndex;
+            } else {
+                // convert all of the newlines we saw into plain text.
+                for (int j = i; j < lastEqualsIndex; j++) {
+                    tokens.set(j, new TextToken(tokens.get(j).getValue()));
+                }
+            }
+        }
+        return i;
     }
 
     private void collapseColonsThatAreNotPartOfDefinitions(List<AbstractToken> tokens, AbstractToken token, int i) {

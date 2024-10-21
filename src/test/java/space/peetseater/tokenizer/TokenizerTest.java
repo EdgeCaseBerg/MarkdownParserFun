@@ -2,12 +2,18 @@ package space.peetseater.tokenizer;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 import space.peetseater.tokenizer.tokens.*;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 class TokenizerTest {
 
     Tokenizer tokenizer;
@@ -117,6 +123,38 @@ class TokenizerTest {
         );
         List<String> actual = tokens.stream().map(AbstractToken::getType).toList();
         assertEquals(expectedTypes, actual);
+    }
+
+    @ParameterizedTest()
+    @MethodSource("stringToTokenListTestCases")
+    public void string_of_x_should_become_tokens_list_of(String markdown, List<String> expectedTypes) {
+        TokenList tokens = tokenizer.tokenize(markdown);
+        List<String> actual = tokens.stream().map(AbstractToken::getType).toList();
+        assertEquals(expectedTypes, actual);
+    }
+
+    public Stream<Arguments> stringToTokenListTestCases() {
+        return Stream.of(
+            Arguments.of(
+                "Equals and newline together retain meaning\n===\n\n",
+                List.of(
+                    TextToken.TYPE, NewLineToken.TYPE,
+                    EqualsToken.TYPE, EqualsToken.TYPE, EqualsToken.TYPE, NewLineToken.TYPE,
+                    NewLineToken.TYPE, EndOfFileToken.TYPE
+                )
+            ),
+            Arguments.of(
+                "This is just text = and not anything else",
+                List.of(TextToken.TYPE, TextToken.TYPE, TextToken.TYPE, EndOfFileToken.TYPE)
+            ),
+            Arguments.of(
+                "Even if === has multiple, if there's no \n right after then its text",
+                List.of(
+                    TextToken.TYPE, TextToken.TYPE, TextToken.TYPE, TextToken.TYPE, TextToken.TYPE, NewLineToken.TYPE,
+                    TextToken.TYPE, EndOfFileToken.TYPE
+                )
+            )
+        );
     }
 
 }
