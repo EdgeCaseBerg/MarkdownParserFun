@@ -124,6 +124,22 @@ class TokenizerTest {
                     TextToken.TYPE, TextToken.TYPE,
                     EndOfFileToken.TYPE
                 )
+            ),
+            Arguments.of(
+                "\n-----\n a dash should count if on its own line",
+                List.of(
+                    NewLineToken.TYPE,
+                    DashToken.TYPE, DashToken.TYPE, DashToken.TYPE, DashToken.TYPE, DashToken.TYPE,
+                    NewLineToken.TYPE, TextToken.TYPE,
+                    EndOfFileToken.TYPE
+                )
+            ),
+            Arguments.of(
+                "A dash in a sentence doesn't count - you know",
+                List.of(
+                    TextToken.TYPE, TextToken.TYPE, TextToken.TYPE,
+                    EndOfFileToken.TYPE
+                )
             )
         );
     }
