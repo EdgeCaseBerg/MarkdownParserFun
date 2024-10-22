@@ -125,6 +125,7 @@ class TokenizerTest {
                     EndOfFileToken.TYPE
                 )
             ),
+            /* But I think we won't bother treating them as a special thing... so... */
             Arguments.of(
                 "\n-----\n a dash should count if on its own line",
                 List.of(
@@ -135,9 +136,9 @@ class TokenizerTest {
                 )
             ),
             Arguments.of(
-                "A dash in a sentence doesn't count - you know",
+                "Dashes are maintained in regular - text ",
                 List.of(
-                    TextToken.TYPE, TextToken.TYPE, TextToken.TYPE,
+                    TextToken.TYPE, DashToken.TYPE, TextToken.TYPE,
                     EndOfFileToken.TYPE
                 )
             )
